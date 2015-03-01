@@ -1,0 +1,72 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    android:background="@color/black">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarStyle">
+
+            <Button
+                android:id="@+id/Submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/submit_string"
+                android:textColor="@color/white"
+                style="?android:attr/buttonBarButtonStyle" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/name_hint"
+            android:inputType="text"
+            android:imeOptions="actionSend"
+            android:maxLength="10"
+            android:background="@color/gray"
+            android:textColor="@color/white" />
+
+        <EditText
+            android:id="@+id/Marks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/marks_hint"
+            android:inputType="number"
+            android:imeOptions="actionSend"
+            android:maxLength="3"
+            android:background="@color/gray"
+            android:textColor="@color/white" />
+
+        <EditText
+            android:id="@+id/TotalMarks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/total_marks_hint"
+            android:inputType="number"
+            android:imeOptions="actionSend"
+            android:maxLength="3"
+            android:background="@color/gray"
+            android:textColor="@color/white" />
+
+        <EditText
+            android:id="@+id/Weightage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/weightage_hint"
+            android:inputType="number"
+            android:imeOptions="actionSend"
+            android:maxLength="3"
+            android:background="@color/gray"
+            android:textColor="@color/white" />
+    </TableLayout>
+</RelativeLayout>
