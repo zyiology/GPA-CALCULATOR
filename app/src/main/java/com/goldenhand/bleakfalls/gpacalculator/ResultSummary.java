@@ -34,6 +34,7 @@ public class ResultSummary extends ActionBarActivity {
 
     static String RESULT_ARRAY = "com.goldenhand.bleakfalls.gpacalculator.MainActivity.allResultArray";
     static String GPA = "com.goldenhand.bleakfalls.gpacalculator.MainActivity.GPA";
+    static String FINAL_SCORE = "com.goldenhand.bleakfalls.gpacalculator.MainActivity.FinalScore";
 
     Result[] allResultArray;
     private static Result[] resultArray;
@@ -54,6 +55,10 @@ public class ResultSummary extends ActionBarActivity {
         String gpa = (String) getIntent().getExtras().get(GPA);
         TextView gpatext = (TextView) findViewById(R.id.GPA);
         gpatext.setText(gpa);
+
+        String finalScore = (String) getIntent().getExtras().get(FINAL_SCORE).toString();
+        TextView finalScoreText = (TextView) findViewById(R.id.FinalScore);
+        finalScoreText.setText(finalScore);
 
         Button add = (Button) findViewById(R.id.Add);
         add.setOnClickListener(new View.OnClickListener() {

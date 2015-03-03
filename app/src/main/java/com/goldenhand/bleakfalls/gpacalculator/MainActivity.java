@@ -150,6 +150,7 @@ public class MainActivity extends ActionBarActivity {
                     Intent intent = new Intent(MainActivity.this, ResultSummary.class);
                     intent.putExtra(ResultSummary.RESULT_ARRAY, allResultsArray);
                     intent.putExtra(ResultSummary.GPA, gpa);
+                    intent.putExtra(ResultSummary.FINAL_SCORE, finalScore);
                     startActivity(intent);
                 }
             }
