@@ -1,6 +1,5 @@
 package com.goldenhand.bleakfalls.gpacalculator;
 
-import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -14,42 +13,27 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-public class MainActivity extends ActionBarActivity {
+public class AddAssgmActivity extends ActionBarActivity {
 
     public String[] tempStringArray = new String[4];
     public ArrayList<Result> allResults = new ArrayList<Result>();
 
-    static Result[] allResultsArray;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        if (getIntent().getExtras() != null) {
-            Result[] oldResultArray = (Result[]) getIntent().getExtras().get(ResultSummary.RESULT_ARRAY);
-            for (int i=0;i<oldResultArray.length;i++) {
-                allResults.add(oldResultArray[i]);
-            }
-        }
+        setContentView(R.layout.activity_add_assgm);
 
         //setting up input stuff
-        final EditText name = (EditText) findViewById(R.id.Name);
-        final EditText marks = (EditText) findViewById(R.id.Marks);
-        final EditText totalMarks = (EditText) findViewById(R.id.TotalMarks);
-        final EditText weightage = (EditText) findViewById(R.id.Weightage);
+        final EditText assignmentEditText = (EditText) findViewById(R.id.Name);
+        final EditText scoreEditText = (EditText) findViewById(R.id.Marks);
+        final EditText maxScoreEditText = (EditText) findViewById(R.id.TotalMarks);
+        final EditText weightageEditText = (EditText) findViewById(R.id.Weightage);
         final Button submission = (Button) findViewById(R.id.Submit);
         final ListView resultSummary = (ListView) findViewById(R.id.resultSummary);
 
@@ -58,36 +42,36 @@ public class MainActivity extends ActionBarActivity {
         if(imm != null) {
             imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
         }
-        name.requestFocus();
+        assignmentEditText.requestFocus();
 
-        name.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        assignmentEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
-                    marks.requestFocus();
+                    scoreEditText.requestFocus();
                 }
                 return true;
             }
         });
 
-        marks.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        scoreEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
-                    totalMarks.requestFocus();
+                    maxScoreEditText.requestFocus();
                 }
                 return true;
             }
         });
 
-        totalMarks.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        maxScoreEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
-                    weightage.requestFocus();
+                    weightageEditText.requestFocus();
                 }
                 return true;
             }
         });
 
-        weightage.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        weightageEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
                     submission.performClick();
@@ -104,26 +88,30 @@ public class MainActivity extends ActionBarActivity {
         submission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (name.getText().toString().matches("") || marks.getText().toString().matches("") || totalMarks.getText().toString().matches("") || weightage.getText().toString().matches("")) {
+                if (assignmentEditText.getText().toString().matches("") || scoreEditText.getText().toString().matches("") || maxScoreEditText.getText().toString().matches("") || weightageEditText.getText().toString().matches("")) {
                     Toast.makeText(getApplicationContext(), "NOT ALL FIELDS ARE FILLED", Toast.LENGTH_SHORT).show();
-                } else if (Integer.parseInt(marks.getText().toString())>Integer.parseInt(totalMarks.getText().toString())){
+                } else if (Integer.parseInt(scoreEditText.getText().toString())>Integer.parseInt(maxScoreEditText.getText().toString())){
                     Toast.makeText(getApplicationContext(), "MARKS CANNOT EXCEED TOTAL MARKS", Toast.LENGTH_SHORT).show();
                 } else {
                     //preparing resultarray
-                    Result result = new Result(name.getText().toString(), marks.getText().toString(), totalMarks.getText().toString(), weightage.getText().toString());
+                    Result result = new Result(assignmentEditText.getText().toString(), scoreEditText.getText().toString(), maxScoreEditText.getText().toString(), weightageEditText.getText().toString());
+                    Subject testSubject = (Subject) getIntent().getExtras().get(ResultSummary.TARGET_SUBJECT);
+                    ArrayList<Result> allResults = testSubject.getResults();
                     allResults.add(result);
-                    Result[] allResultsArray = new Result[allResults.size()];
-                    allResultsArray = allResults.toArray(allResultsArray);
+
+                    for (int y=0;y<allResults.size();y++) {
+                        Log.d("Results",allResults.get(y).getResultName());
+                    }
 
                     //preparing gpa calculations
-                    float totalPercent = 0;
-                    float totalMarks = 0;
-                    for (int i = 0; i < allResultsArray.length; i++) {
-                        totalMarks += ((Float.parseFloat(allResultsArray[i].getMarks()) / Float.parseFloat(allResultsArray[i].getTotalMarks())) * ((Float.parseFloat(allResultsArray[i].getWeightage())) / 100));
-                        totalPercent += Float.parseFloat(allResultsArray[i].getWeightage())/100;
-                        Log.d("Marks/Total", String.valueOf((Float.parseFloat(allResultsArray[i].getMarks()) / Float.parseFloat(allResultsArray[i].getTotalMarks()))));
+                    double totalScore = 0;
+                    double maxScore = 0;
+                    for (int i = 0; i < allResults.size(); i++) {
+                        maxScore += ((Double.parseDouble(allResults.get(i).getMarks()) / Double.parseDouble(allResults.get(i).getTotalMarks())) * ((Double.parseDouble(allResults.get(i).getWeightage())) / 100));
+                        totalScore += Double.parseDouble(allResults.get(i).getWeightage())/100;
+                        Log.d("Marks/Total", String.valueOf((Double.parseDouble(allResults.get(i).getMarks()) / Double.parseDouble(allResults.get(i).getTotalMarks()))));
                     }
-                    float finalScore = (totalMarks / totalPercent) * 100;
+                    double finalScore = (totalScore / maxScore) * 100;
                     Log.d("FinalScore",String.valueOf(finalScore));
 
                     String gpa;
@@ -147,10 +135,24 @@ public class MainActivity extends ActionBarActivity {
                         gpa = "0.8";
                     }
 
-                    Intent intent = new Intent(MainActivity.this, ResultSummary.class);
-                    intent.putExtra(ResultSummary.RESULT_ARRAY, allResultsArray);
-                    intent.putExtra(ResultSummary.GPA, gpa);
+                    Subject subject = (Subject) getIntent().getExtras().get(ResultSummary.TARGET_SUBJECT);
+                    Subject[] subjectArray = (Subject[]) getIntent().getExtras().get(SubjectList.SUBJECT_ARRAY);
+
+                    for (int i=0;i<subjectArray.length;i++){
+                        Log.d("setResults",subjectArray[i].getName());
+                        Log.d("setResults",subject.getName());
+                        if (subjectArray[i].getName().equals(subject.getName())) {
+                            subjectArray[i].setResults(allResults);
+                            subjectArray[i].setGpa(gpa);
+                            subject.setResults(allResults);
+                            subject.setGpa(gpa);
+                            Log.d("setResults", "Results set");
+                        }
+                    }
+                    Intent intent = new Intent(AddAssgmActivity.this, ResultSummary.class);
                     intent.putExtra(ResultSummary.FINAL_SCORE, finalScore);
+                    intent.putExtra(ResultSummary.TARGET_SUBJECT, subject);
+                    intent.putExtra(SubjectList.SUBJECT_ARRAY, subjectArray);
                     startActivity(intent);
                 }
             }
@@ -179,6 +181,4 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
 }

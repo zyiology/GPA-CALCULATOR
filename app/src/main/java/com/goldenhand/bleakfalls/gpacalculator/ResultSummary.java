@@ -1,25 +1,17 @@
 package com.goldenhand.bleakfalls.gpacalculator;
 
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -32,9 +24,10 @@ import java.util.Map;
 
 public class ResultSummary extends ActionBarActivity {
 
-    static String RESULT_ARRAY = "com.goldenhand.bleakfalls.gpacalculator.MainActivity.allResultArray";
-    static String GPA = "com.goldenhand.bleakfalls.gpacalculator.MainActivity.GPA";
-    static String FINAL_SCORE = "com.goldenhand.bleakfalls.gpacalculator.MainActivity.FinalScore";
+    static String RESULT_ARRAY = "com.goldenhand.bleakfalls.gpacalculator.AddAssgmActivity.allResultArray";
+    static String GPA = "com.goldenhand.bleakfalls.gpacalculator.AddAssgmActivity.GPA";
+    static String FINAL_SCORE = "com.goldenhand.bleakfalls.gpacalculator.AddAssgmActivity.FinalScore";
+    static String TARGET_SUBJECT = "com.goldenhand.bleakfalls.gpacalculator.SubjectList.targetSubject";
 
     Result[] allResultArray;
     private static Result[] resultArray;
@@ -43,29 +36,55 @@ public class ResultSummary extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_result_summary);
-        allResultArray = (Result[]) getIntent().getExtras().get(RESULT_ARRAY);
+        Subject[] subjectArray = (Subject[]) getIntent().getExtras().get(SubjectList.SUBJECT_ARRAY);
+        Subject subject = (Subject) getIntent().getExtras().get(ResultSummary.TARGET_SUBJECT);
+
+        String gpa = subject.getGpa();
+        ArrayList<Result> resultsArrayList = subject.getResults();
+
+        allResultArray = new Result[resultsArrayList.size()];
+        for (int i=0;i<resultsArrayList.size();i++) {
+            allResultArray[i]=resultsArrayList.get(i);
+        }
         resultArray = allResultArray;
         if (getFragmentManager().findFragmentById(android.R.id.content) == null) {
             resultSummary list = new resultSummary();
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            //ft.add(android.R.id.content, list);
-            ft.add(R.id.included, list);
+            android.app.Fragment fragment = getFragmentManager().findFragmentById(R.id.resultSummary);
+            FragmentManager fm = getFragmentManager();
+            fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.included, list);
             ft.commit();
         }
-        String gpa = (String) getIntent().getExtras().get(GPA);
-        TextView gpatext = (TextView) findViewById(R.id.GPA);
-        gpatext.setText(gpa);
 
-        String finalScore = (String) getIntent().getExtras().get(FINAL_SCORE).toString();
-        TextView finalScoreText = (TextView) findViewById(R.id.FinalScore);
-        finalScoreText.setText(finalScore);
+        TextView subjectItemTextView = (TextView) findViewById(R.id.subjectItem);
+        subjectItemTextView.setText("Subject: " + subject.getName());
 
-        Button add = (Button) findViewById(R.id.Add);
+        TextView gpaItemTextView = (TextView) findViewById(R.id.gpaItem);
+        gpaItemTextView.setText("GPA: " + gpa);
+
+        if (getIntent().getExtras().containsKey(FINAL_SCORE)) {
+            TextView percentageItemTextView = (TextView) findViewById(R.id.percentageItem);
+            percentageItemTextView.setText("Final Score: " + getIntent().getExtras().get(FINAL_SCORE));
+        }
+
+        Button add = (Button) findViewById(R.id.addAssgm);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ResultSummary.this, MainActivity.class);
-                i.putExtra(RESULT_ARRAY, allResultArray);
+                Intent i = new Intent(ResultSummary.this, AddAssgmActivity.class);
+                i.putExtra(SubjectList.SUBJECT_ARRAY, (Subject[]) getIntent().getExtras().get(SubjectList.SUBJECT_ARRAY));
+                i.putExtra(TARGET_SUBJECT, (Subject) getIntent().getExtras().get(TARGET_SUBJECT));
+                startActivity(i);
+            }
+        });
+
+        Button returnSubjectList = (Button) findViewById(R.id.returnToSubjectList);
+        returnSubjectList.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ResultSummary.this, SubjectList.class);
+                i.putExtra(SubjectList.SUBJECT_ARRAY, (Subject[]) getIntent().getExtras().get(SubjectList.SUBJECT_ARRAY));
                 startActivity(i);
             }
         });

@@ -10,9 +10,12 @@
     <string name="weightage_hint">Weightage (Percentage)</string>
     <string name="submit_string">Submit!</string>
     <string name="add_string">+</string>
-    <string name="title_activity_result_summary">resultSummary</string>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="gray">#6e6e6e</color>
+    <string name="title_activity_add_subj">Add Subject</string>
+    <string name="title_activity_result_summary">Results Summary</string>
+    <string name="title_activity_add_assgm">Add Assignment</string>
+    <string name="title_activity_subject_list">Subjects List</string>
 
 </resources>

@@ -8,24 +8,21 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".SubjectList"
+            android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".ResultSummary"
+            android:name=".resultSummary"
             android:label="@string/title_activity_result_summary" >
         </activity>
         <activity
-            android:name=".AddSubjActivity"
-            android:label="@string/title_activity_add_subj" >
-        </activity>
-        <activity
-            android:name=".AddAssgmActivity"
-            android:label="@string/title_activity_add_assgm" >
+            android:name=".ResultSummary"
+            android:label="@string/title_activity_result_summary" >
         </activity>
     </application>
 

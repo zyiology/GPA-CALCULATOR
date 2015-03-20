@@ -15,32 +15,18 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:background="@color/black" >
+        android:background="@color/gray" >
 
         <TextView
-            android:id="@+id/subjectItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/gpaItem"
+            android:id="@+id/overallGpaItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="NO GPA YET"
             android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/percentageItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="NO GPA YET"
-            android:textColor="@color/white" />
-
     </TableLayout>
 
     <Button
-        android:id="@+id/addAssgm"
+        android:id="@+id/addSubjectButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_string"
@@ -51,19 +37,17 @@
         style="?android:attr/buttonBarStyle" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/returnToSubjectList"
-        android:text="Return to Subject List" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/fakeButton"/>
 
-        <ListView
-            android:id="@+id/resultSummary"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_above="@+id/addAssgm"
-            android:cacheColorHint="#00000000"
-            android:dividerHeight="0dp"
-            android:divider="@null" />
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/addSubjectButton"
+        android:cacheColorHint="#00000000"
+        android:dividerHeight="0dp"
+        android:divider="@null" />
 
 </RelativeLayout>
