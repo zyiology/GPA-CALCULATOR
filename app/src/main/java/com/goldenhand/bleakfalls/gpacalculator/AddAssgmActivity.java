@@ -111,7 +111,7 @@ public class AddAssgmActivity extends ActionBarActivity {
                         totalScore += Double.parseDouble(allResults.get(i).getWeightage())/100;
                         Log.d("Marks/Total", String.valueOf((Double.parseDouble(allResults.get(i).getMarks()) / Double.parseDouble(allResults.get(i).getTotalMarks()))));
                     }
-                    double finalScore = (totalScore / maxScore) * 100;
+                    double finalScore = (maxScore / totalScore) * 100;
                     Log.d("FinalScore",String.valueOf(finalScore));
 
                     String gpa;
